@@ -1,0 +1,187 @@
+<html>
+
+<head>
+    <title>Robot Control Panel</title>
+
+    <script type="text/javascript">
+        var canvas, ctx;
+        var mouseX, mouseY, mouseDown = 0;
+        var touchX, touchY;
+
+        var dotSize = 12;
+
+        function drawDot(x, y) {
+            r = 0;
+            g = 0;
+            b = 0;
+            a = 255;
+
+            clearAndDrawLines();
+
+            ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (a / 255) + ")";
+
+            ctx.beginPath();
+            ctx.arc(x, y, dotSize, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+            
+            sendCoords(x / 2, y / 2);
+        }
+
+        function sendCoords(x, y) {
+
+            //if they manage to go off the screen
+            if (x < 0) {
+                x = 0;
+            }
+            if (y < 0) {
+                y = 0;
+            }
+            if (x > 200) {
+                x = 200;
+            }
+            if (y > 200) {
+                y = 200;
+            }
+
+            //git rid of decimals
+            x = Math.round(x);
+            y = Math.round(y);
+            //console.log("x: " + x + " y: " + y);
+            var http = new XMLHttpRequest();
+            http.open('POST', "http://%IP%:%PORT%/xy/"+x+"/"+y, true);
+            http.send();
+        }
+
+        function reset() {
+            drawDot(canvas.width / 2, canvas.height / 2);
+        }
+
+        function clearAndDrawLines() {
+            //Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.beginPath();
+            //v line
+            ctx.moveTo(canvas.width / 2, -canvas.height);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+
+            //h line
+            ctx.moveTo(-canvas.width, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+
+            ctx.strokeStyle = '#FF0000';
+            ctx.stroke();
+        }
+
+        function sketchpad_mouseDown() {
+            mouseDown = 1;
+        }
+
+        function sketchpad_mouseUp() {
+            mouseDown = 0;
+            reset();
+        }
+
+        function sketchpad_mouseMove(e) {
+            getMousePos(e);
+            if (mouseDown == 1) {
+                drawDot(mouseX, mouseY);
+            }
+        }
+
+        function getMousePos(e) {
+            if (!e)
+                var e = event;
+
+            if (e.offsetX) {
+                mouseX = e.offsetX;
+                mouseY = e.offsetY;
+            } else if (e.layerX) {
+                mouseX = e.layerX;
+                mouseY = e.layerY;
+            }
+        }
+
+        // Draw something when a touch start is detected
+        function sketchpad_touchStart() {
+            getTouchPos();
+
+            drawDot(touchX, touchY);
+
+            event.preventDefault();
+        }
+
+        // Draw something and prevent the default scrolling when touch movement is detected
+        function sketchpad_touchMove(e) {
+            getTouchPos(e);
+
+            drawDot(touchX, touchY);
+
+            event.preventDefault();
+        }
+
+        // Get the touch position relative to the top-left of the canvas
+        // When we get the raw values of pageX and pageY below, they take into account the scrolling on the page
+        // but not the position relative to our target div. We'll adjust them using "target.offsetLeft" and
+        // "target.offsetTop" to get the correct values in relation to the top left of the canvas.
+        function getTouchPos(e) {
+            if (!e)
+                var e = event;
+
+            if (e.touches) {
+                if (e.touches.length == 1) { // Only deal with one finger
+                    var touch = e.touches[0]; // Get the information for finger #1
+                    touchX = touch.pageX - touch.target.offsetLeft;
+                    touchY = touch.pageY - touch.target.offsetTop;
+                }
+            }
+        }
+
+        function init() {
+
+            canvas = document.getElementById('sketchpad');
+
+            if (canvas.getContext)
+                ctx = canvas.getContext('2d');
+
+            if (ctx) {
+                canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
+                canvas.addEventListener('mousemove', sketchpad_mouseMove, false);
+                window.addEventListener('mouseup', sketchpad_mouseUp, false);
+
+                canvas.addEventListener('touchstart', sketchpad_touchStart, false);
+                canvas.addEventListener('touchmove', sketchpad_touchMove, false);
+            }
+
+            reset();
+        }
+    </script>
+
+    <style>
+        #sketchpadapp {
+            /* Prevent nearby text being highlighted when accidentally dragging mouse outside confines of the canvas */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        #sketchpad {
+            float: left;
+            border: 2px solid #888;
+            border-radius: 4px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body onload="init()">
+    <div id="sketchpadapp">
+        <canvas id="sketchpad" height="400" width="400"> </canvas>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+﻿<Window x:Class="KinectTiltCamera.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded" Closed="Window_Closed">
+    <Grid>
+        <Image Height="240" HorizontalAlignment="Left" Margin="12,12,0,0" Name="imageRGB" Stretch="Fill" VerticalAlignment="Top" Width="320" />
+        <Button Content="Set angle" Height="45" HorizontalAlignment="Left" Margin="358,12,0,0" Name="bSetTilt" VerticalAlignment="Top" Width="124" Click="bSetTilt_Click" />
+        <Slider Height="122" HorizontalAlignment="Left" Margin="388,92,0,0" Name="sSetTilt" VerticalAlignment="Top" Width="23" Orientation="Vertical" Maximum="27" Minimum="-27" />
+        <Label Content="0" Height="49" HorizontalAlignment="Left" Margin="417,128,0,0" Name="lTiltValue" VerticalAlignment="Top" Width="65" FontSize="24" />
+    </Grid>
+</Window>

@@ -1,0 +1,9 @@
+﻿<Window x:Class="KinectTiltCameraColorViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded" xmlns:my="clr-namespace:KinectTiltCameraColorViewer" Closing="Window_Closing">
+    <Grid>
+        <my:KinectColorViewer HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="kcvColorViewer" VerticalAlignment="Top" Height="240" Width="320" Kinect="{Binding ElementName=kscSensorChooser, Path=Kinect}" />
+        <my:KinectSensorChooser HorizontalAlignment="Left" Margin="94,138,0,0" x:Name="kscSensorChooser" VerticalAlignment="Top" Width="328" />
+    </Grid>
+</Window>
