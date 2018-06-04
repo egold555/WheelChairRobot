@@ -11,6 +11,7 @@ using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Matrix = System.Drawing.Drawing2D.Matrix;
 
 namespace WinFormsFaceTest
 {
@@ -56,15 +57,10 @@ namespace WinFormsFaceTest
                 g.FillRectangle(brush, rc);
             }
 
-            //float leftEyeBrowRotation = 10f;
-            //float rightEyeBrowRotation = -3f;
+            
+            drawCenteredArc(g, -137, -155, 100, -20, 23, COLOR_FACE, 10f, 0.9f); //Left Eyebrow
 
-            //g.RotateTransform(leftEyeBrowRotation);
-            drawCenteredArc(g, -137, -155, 100, -20, 23, COLOR_FACE, 0.9f); //Left Eyebrow
-            //g.ResetTransform();
-            //g.RotateTransform(rightEyeBrowRotation);
-            drawCenteredArc(g, 137, -155, 100, -20, 23, COLOR_FACE, 0.9f); //Right Eyebrow
-            //g.ResetTransform();
+            drawCenteredArc(g, 137, -155, 100, -20, 23, COLOR_FACE, -10f, 0.9f); //Right Eyebrow
 
             drawEye(g, -120, -50); //Left Eye
             drawEye(g, 120, -50); //Right eye
@@ -130,19 +126,30 @@ namespace WinFormsFaceTest
 
         private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color)
         {
-            drawCenteredArc(g, offX, offY, size, height, penWidth, color, 0.5f);
+            drawCenteredArc(g, offX, offY, size, height, penWidth, color, 0, 0.5f);
         }
 
-        private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color, float tension)
+        private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color, float rotation)
+        {
+            drawCenteredArc(g, offX, offY, size, height, penWidth, color, rotation, 0.5f);
+        }
+
+        private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color, float rotation, float tension)
         {
             PointF ptStart = new PointF(screen.Width / 2 + offX - size / 2, screen.Height / 2 + offY);
             PointF ptEnd = new PointF(screen.Width / 2 + offX + size / 2, screen.Height / 2 + offY);
             PointF ptMiddle = new PointF(screen.Width / 2 + offX, screen.Height / 2 + offY + height / 2);
 
+            Matrix m = new Matrix();
+            m.RotateAt(rotation, ptMiddle);
+            g.MultiplyTransform(m);
+
             Pen pen = new Pen(color, penWidth);
             pen.StartCap = LineCap.Round;
             pen.EndCap = LineCap.Round;
             g.DrawCurve(pen, new PointF[] { ptStart, ptMiddle, ptEnd }, tension);
+
+            g.ResetTransform();
 
             pen.Dispose();
         }
