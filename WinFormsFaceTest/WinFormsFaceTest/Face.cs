@@ -105,7 +105,7 @@ namespace WinFormsFaceTest
                 if (GetSampleRange(out sampleStart, out sampleStop)) {
                     double amplitude = AmplitudeSample(sampleStart, sampleStop);
                     drawCenteredArc(g, 0, 137, 118, (float) (amplitude * 60) + 10, 25, COLOR_FACE); //Mouth
-                    drawEye(g, -120, -50, 0, (float)(amplitude * 40));
+                    //drawEye(g, -120, -50, 0, (float)(amplitude * 40));
                 } else {
                     //Stop flicker
                     drawCenteredArc(g, 0, 137, 118, 10, 25, COLOR_FACE); //Mouth
