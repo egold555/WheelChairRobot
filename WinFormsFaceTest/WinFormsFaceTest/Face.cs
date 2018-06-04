@@ -56,15 +56,15 @@ namespace WinFormsFaceTest
                 g.FillRectangle(brush, rc);
             }
 
-            float leftEyeBrowRotation = 10f;
-            float rightEyeBrowRotation = -10f;
+            //float leftEyeBrowRotation = 10f;
+            //float rightEyeBrowRotation = -3f;
 
-            g.RotateTransform(leftEyeBrowRotation);
+            //g.RotateTransform(leftEyeBrowRotation);
             drawCenteredArc(g, -137, -155, 100, -20, 23, COLOR_FACE, 0.9f); //Left Eyebrow
-            g.RotateTransform(-leftEyeBrowRotation);
-            g.RotateTransform(rightEyeBrowRotation);
+            //g.ResetTransform();
+            //g.RotateTransform(rightEyeBrowRotation);
             drawCenteredArc(g, 137, -155, 100, -20, 23, COLOR_FACE, 0.9f); //Right Eyebrow
-            g.RotateTransform(-rightEyeBrowRotation);
+            //g.ResetTransform();
 
             drawEye(g, -120, -50); //Left Eye
             drawEye(g, 120, -50); //Right eye
@@ -105,6 +105,7 @@ namespace WinFormsFaceTest
                 if (GetSampleRange(out sampleStart, out sampleStop)) {
                     double amplitude = AmplitudeSample(sampleStart, sampleStop);
                     drawCenteredArc(g, 0, 137, 118, (float) (amplitude * 60) + 10, 25, COLOR_FACE); //Mouth
+                    drawEye(g, -120, -50, 0, (float)(amplitude * 40));
                 } else {
                     //Stop flicker
                     drawCenteredArc(g, 0, 137, 118, 10, 25, COLOR_FACE); //Mouth
@@ -118,8 +119,13 @@ namespace WinFormsFaceTest
 
         private void drawEye(Graphics g, float offX, float offY)
         {
-            drawFilledCircleCentered(g, offX, offY, SIZE_OUTTER_EYE, COLOR_EYE_OUT);
-            drawFilledCircleCentered(g, offX, offY, SIZE_INNER_EYE, COLOR_EYE_IN);
+            drawEye(g, offX, offY, 0, 0);
+        }
+
+        private void drawEye(Graphics g, float offX, float offY, float inOffX, float inOffY)
+        {
+            drawFilledCircleCentered(g, offX, offY, SIZE_OUTTER_EYE, COLOR_EYE_OUT); //out
+            drawFilledCircleCentered(g, offX + inOffX, offY + inOffY, SIZE_INNER_EYE, COLOR_EYE_IN); //in
         }
 
         private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color)
@@ -160,7 +166,15 @@ namespace WinFormsFaceTest
 
             var synth = new SpeechSynthesizer(); //Create one and not dispose of it? Might be better memory management
             //http://www.kobaspeech.com/en/download-voices
-            synth.SelectVoice("Vocalizer Karen - English (Australia) For KobaSpeech 3");
+            try
+            {
+                synth.SelectVoice("Vocalizer Karen - English (Australia) For KobaSpeech 3");
+            }
+            catch (System.ArgumentException e)
+            {
+                //Incase they dont have the voice installed, we will just use the default microsoft david voice witch every computer should have
+                synth.SelectVoice("Microsoft David Desktop");
+            }
             synth.SetOutputToWaveFile(fileName);
             synth.Speak(text);
             synth.SetOutputToNull();
