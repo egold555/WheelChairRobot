@@ -102,14 +102,14 @@ namespace WinFormsFaceTest
 
                 if (GetSampleRange(out sampleStart, out sampleStop)) {
                     double amplitude = AmplitudeSample(sampleStart, sampleStop);
-                    drawCenteredArc(g, 0, 137, 118, (float) (amplitude * 60) + 10, 25, COLOR_FACE); //Mouth\
+                    drawCenteredArc(g, 0, 137, 118, (float) (amplitude * 60) + 10, 25, COLOR_FACE); //Mouth
                 } else {
                     //Stop flicker
                     drawCenteredArc(g, 0, 137, 118, 10, 25, COLOR_FACE); //Mouth
                 }
             }
             else {
-                drawCenteredArc(g, 0, 137, 118, 10, 25, COLOR_FACE); //Mouth
+                drawCenteredArc(g, 0, 137, 118, 20, 25, COLOR_FACE); //Mouth
             }
 
         }
@@ -337,9 +337,10 @@ namespace WinFormsFaceTest
         public readonly float rightEyeBrowRotation;
         public readonly float rightEyeBrowTension;
 
-        public static readonly FacialExpression NEUTRAL = new FacialExpression(0, 0, 0.9f, 0.9f);
+        public static readonly FacialExpression NEUTRAL = new FacialExpression(0, 0);
 
-        public FacialExpression(float leftEyeBrowRotation, float rightEyeBrowRotation, float leftEyeBrowTension, float rightEyeBrowTension)
+        //add looking in here as a argument that you can pass or not
+        public FacialExpression(float leftEyeBrowRotation, float rightEyeBrowRotation, float leftEyeBrowTension = 0.9f, float rightEyeBrowTension = 0.9f)
         {
             this.leftEyeBrowRotation = leftEyeBrowRotation;
             this.leftEyeBrowTension = leftEyeBrowTension;
