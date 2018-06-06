@@ -1,6 +1,5 @@
 ﻿using DSPUtil;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -8,12 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Speech.Synthesis;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Matrix = System.Drawing.Drawing2D.Matrix;
 
 namespace WinFormsFaceTest
 {
+
     class Face
     {
 
@@ -28,10 +27,14 @@ namespace WinFormsFaceTest
 
         private PictureBox screen;
 
+        private FacialExpression facialExpression = FacialExpression.NEUTRAL;
+        private Looking looking = Looking.STRAIGHT;
+
         public Face(PictureBox screen)
         {
             this.screen = screen;
 
+            /*
             // Initialize a new instance of the SpeechSynthesizer.
             using (SpeechSynthesizer synth = new SpeechSynthesizer()) {
 
@@ -42,6 +45,7 @@ namespace WinFormsFaceTest
                     Console.WriteLine(" Voice Name: " + info.Name);
                 }
             }
+            */
         }
 
         public void draw(Graphics g)
@@ -56,18 +60,12 @@ namespace WinFormsFaceTest
                 g.FillRectangle(brush, rc);
             }
 
-            //float leftEyeBrowRotation = 10f;
-            //float rightEyeBrowRotation = -3f;
+            
+            drawCenteredArc(g, -137, -155, 100, -20, 23, COLOR_FACE, facialExpression.leftEyeBrowRotation, facialExpression.leftEyeBrowTension); //Left Eyebrow
+            drawCenteredArc(g, 137, -155, 100, -20, 23, COLOR_FACE, 0, 0.9f); //Right Eyebrow
 
-            //g.RotateTransform(leftEyeBrowRotation);
-            drawCenteredArc(g, -137, -155, 100, -20, 23, COLOR_FACE, 0.9f); //Left Eyebrow
-            //g.ResetTransform();
-            //g.RotateTransform(rightEyeBrowRotation);
-            drawCenteredArc(g, 137, -155, 100, -20, 23, COLOR_FACE, 0.9f); //Right Eyebrow
-            //g.ResetTransform();
-
-            drawEye(g, -120, -50); //Left Eye
-            drawEye(g, 120, -50); //Right eye
+            drawEye(g, -120, -50, looking.eyeX, looking.eyeY); //Left Eye
+            drawEye(g, 120, -50, looking.eyeX, looking.eyeY); //Right eye
 
             
 
@@ -105,14 +103,13 @@ namespace WinFormsFaceTest
                 if (GetSampleRange(out sampleStart, out sampleStop)) {
                     double amplitude = AmplitudeSample(sampleStart, sampleStop);
                     drawCenteredArc(g, 0, 137, 118, (float) (amplitude * 60) + 10, 25, COLOR_FACE); //Mouth
-                    //drawEye(g, -120, -50, 0, (float)(amplitude * 40));
                 } else {
                     //Stop flicker
                     drawCenteredArc(g, 0, 137, 118, 10, 25, COLOR_FACE); //Mouth
                 }
             }
             else {
-                drawCenteredArc(g, 0, 137, 118, 10, 25, COLOR_FACE); //Mouth
+                drawCenteredArc(g, 0, 137, 118, 20, 25, COLOR_FACE); //Mouth
             }
 
         }
@@ -130,19 +127,30 @@ namespace WinFormsFaceTest
 
         private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color)
         {
-            drawCenteredArc(g, offX, offY, size, height, penWidth, color, 0.5f);
+            drawCenteredArc(g, offX, offY, size, height, penWidth, color, 0, 0.5f);
         }
 
-        private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color, float tension)
+        private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color, float rotation)
+        {
+            drawCenteredArc(g, offX, offY, size, height, penWidth, color, rotation, 0.5f);
+        }
+
+        private void drawCenteredArc(Graphics g, float offX, float offY, float size, float height, float penWidth, Color color, float rotation, float tension)
         {
             PointF ptStart = new PointF(screen.Width / 2 + offX - size / 2, screen.Height / 2 + offY);
             PointF ptEnd = new PointF(screen.Width / 2 + offX + size / 2, screen.Height / 2 + offY);
             PointF ptMiddle = new PointF(screen.Width / 2 + offX, screen.Height / 2 + offY + height / 2);
 
+            Matrix m = new Matrix();
+            m.RotateAt(rotation, ptMiddle);
+            g.MultiplyTransform(m);
+
             Pen pen = new Pen(color, penWidth);
             pen.StartCap = LineCap.Round;
             pen.EndCap = LineCap.Round;
             g.DrawCurve(pen, new PointF[] { ptStart, ptMiddle, ptEnd }, tension);
+
+            g.ResetTransform();
 
             pen.Dispose();
         }
@@ -154,6 +162,16 @@ namespace WinFormsFaceTest
             SolidBrush brush = new SolidBrush(color);
             g.FillEllipse(brush, x, y, radius * 2, radius * 2);
             brush.Dispose();
+        }
+
+        public void setFacialExpression(FacialExpression expression)
+        {
+            this.facialExpression = expression;
+        }
+
+        public void setLooking(Looking where)
+        {
+            this.looking = where;
         }
 
         //Text to speech stuff
@@ -292,4 +310,44 @@ namespace WinFormsFaceTest
             return false;
         }
     }
+
+    class Looking
+    {
+        public readonly float eyeX;
+        public readonly float eyeY;
+
+        public static readonly Looking STRAIGHT = new Looking(0, 0);
+        public static readonly Looking LEFT = new Looking(-10, 0);
+        public static readonly Looking RIGHT = new Looking(10, 0);
+        public static readonly Looking UP = new Looking(0, -10);
+        public static readonly Looking DOWN = new Looking(0, 10);
+
+        public Looking(float eyeX, float eyeY)
+        {
+            this.eyeX = eyeX;
+            this.eyeY = eyeY;
+        }
+
+    }
+
+    class FacialExpression {
+
+        public readonly float leftEyeBrowRotation;
+        public readonly float leftEyeBrowTension;
+        public readonly float rightEyeBrowRotation;
+        public readonly float rightEyeBrowTension;
+
+        public static readonly FacialExpression NEUTRAL = new FacialExpression(0, 0);
+
+        //add looking in here as a argument that you can pass or not
+        public FacialExpression(float leftEyeBrowRotation, float rightEyeBrowRotation, float leftEyeBrowTension = 0.9f, float rightEyeBrowTension = 0.9f)
+        {
+            this.leftEyeBrowRotation = leftEyeBrowRotation;
+            this.leftEyeBrowTension = leftEyeBrowTension;
+            this.rightEyeBrowRotation = rightEyeBrowRotation;
+            this.rightEyeBrowTension = rightEyeBrowTension;
+        }
+
+    }
+
 }
