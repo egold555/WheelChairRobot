@@ -50,5 +50,22 @@ namespace WinFormsFaceTest
                // Invalidate(true);
             });
         }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            float rot = ((TrackBar)sender).Value;
+            float ten = face.getFacialExpression().leftEyeBrowTension;
+            face.setFacialExpression(new FacialExpression(rot, rot, ten, ten));
+            Invalidate(true);
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            float rot = face.getFacialExpression().leftEyeBrowRotation;
+            float ten = ((TrackBar)sender).Value * 0.1f;
+            Console.WriteLine("Tension: " + ten);
+            face.setFacialExpression(new FacialExpression(rot, rot, ten, ten));
+            Invalidate(true);
+        }
     }
 }

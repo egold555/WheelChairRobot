@@ -62,7 +62,7 @@ namespace WinFormsFaceTest
 
             
             drawCenteredArc(g, -137, -155, 100, -20, 23, COLOR_FACE, facialExpression.leftEyeBrowRotation, facialExpression.leftEyeBrowTension); //Left Eyebrow
-            drawCenteredArc(g, 137, -155, 100, -20, 23, COLOR_FACE, 0, 0.9f); //Right Eyebrow
+            drawCenteredArc(g, 137, -155, 100, -20, 23, COLOR_FACE, facialExpression.rightEyeBrowRotation, facialExpression.rightEyeBrowTension); //Right Eyebrow
 
             drawEye(g, -120, -50, looking.eyeX, looking.eyeY); //Left Eye
             drawEye(g, 120, -50, looking.eyeX, looking.eyeY); //Right eye
@@ -167,6 +167,11 @@ namespace WinFormsFaceTest
         public void setFacialExpression(FacialExpression expression)
         {
             this.facialExpression = expression;
+        }
+
+        public FacialExpression getFacialExpression()
+        {
+            return facialExpression;
         }
 
         public void setLooking(Looking where)
