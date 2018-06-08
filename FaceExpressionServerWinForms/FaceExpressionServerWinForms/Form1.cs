@@ -26,12 +26,7 @@ namespace FaceExpressionServerWinForms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            send("expression", "happy%100");
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
+            send("expression", comboBox1.Text + "%100");
         }
 
         //Why c# doesnt have this method is unknown
