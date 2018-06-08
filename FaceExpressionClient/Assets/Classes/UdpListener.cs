@@ -39,7 +39,7 @@ public class UdpListener : EmofaniGlobal
 	public void StartListening()
 	{
 		
-		Debug.Log("Starting UDP Listener on Port " + receivePort);
+		FaceAnimator.Log("Starting UDP Listener on Port " + receivePort);
 		
 		if (listenerThread != null && listenerThread.IsAlive) {
 			Close();
@@ -78,10 +78,10 @@ public class UdpListener : EmofaniGlobal
 
 				// clears only if no errors occured
 				messages.Clear();
-				Debug.Log("Messages cleared");
+                FaceAnimator.Log("Messages cleared");
 
 			} catch (Exception e) {
-				Debug.Log(e.Message + ":" + e.StackTrace);
+                FaceAnimator.Log(e.Message + ":" + e.StackTrace);
 			}
 		}
 
@@ -96,12 +96,12 @@ public class UdpListener : EmofaniGlobal
 			while (true) {
 				byte[] bytes = listener.Receive(ref groupEP);
 				string message = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-				Debug.Log(message);
+                FaceAnimator.Log(message);
 				messages.Add(message);
 			}
 			
 		} catch (Exception e) {
-			Debug.Log(e.ToString());
+            FaceAnimator.Log(e.ToString());
 		}
 
 	}
@@ -110,12 +110,12 @@ public class UdpListener : EmofaniGlobal
 	{
 		try {
 			if (listenerThread != null && listenerThread.IsAlive) {
-				Debug.Log("Kill listener thread.");
+                FaceAnimator.Log("Kill listener thread.");
 				listenerThread.Abort();
 			}
 			listener.Close();
 		} catch (Exception e) {
-			Debug.Log(e.Message);
+            FaceAnimator.Log(e.Message);
 		}
 	}
 

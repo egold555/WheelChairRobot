@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System;
+using System.IO;
 
 public class FaceAnimator : EmofaniGlobal
 {
@@ -68,7 +69,7 @@ public class FaceAnimator : EmofaniGlobal
 	public void HandleMessage(string message)
 	{
 
-		Debug.Log ("Input:" + message);
+		Log ("Input:" + message);
 
 		try {
 
@@ -117,7 +118,8 @@ public class FaceAnimator : EmofaniGlobal
 				if (hostname == "") {
 					hostname = IPAddress.Loopback.ToString();
 				}
-				throw new Exception(inputError);
+                Log("Input Error: " + inputError);
+				//throw new Exception(inputError);
 			}
 
 			// Interpret data part of the message
@@ -158,7 +160,9 @@ public class FaceAnimator : EmofaniGlobal
 					Idle = bool.Parse(value);
 					break;
 				default:
-					throw new Exception("Unknown parameter \"" + key + "\"");
+                    Log("Unknown parameter \"" + key + "\"");
+                    break;
+					//throw new Exception("Unknown parameter \"" + key + "\"");
 			}
 
 			// everything was OK. Set new timestamp and send OK status.
@@ -188,7 +192,8 @@ public class FaceAnimator : EmofaniGlobal
 
 		} catch (Exception e) {
 
-			throw new Exception("Expression error: " + e.Message + " ");
+            Log("Expression error: " + e.Message + " ");
+			//throw new Exception("Expression error: " + e.Message + " ");
 
 		}
 	}
@@ -381,7 +386,19 @@ public class FaceAnimator : EmofaniGlobal
 		message += "error:\"" + error + "\"";
 
 		SendStatus(message);
+        Log("Error: " + message);
 	}
+
+    static StreamWriter outputLog;
+
+    public static void Log(string format, params object[] args)
+    {
+        if (outputLog == null) {
+            outputLog = new StreamWriter("unitydebuglog.txt");
+        }
+        outputLog.WriteLine(format, args);
+        outputLog.Flush();
+    }
 
 	private void SendStatus(string message)
 	{
