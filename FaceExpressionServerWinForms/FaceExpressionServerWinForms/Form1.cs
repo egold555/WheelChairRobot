@@ -35,18 +35,18 @@ namespace FaceExpressionServerWinForms
         }
 
         //Why c# doesnt have this method is unknown
-        public static double GetCurrentMilli()
+        public static long GetCurrentMilli()
         {
             DateTime Jan1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             TimeSpan javaSpan = DateTime.UtcNow - Jan1970;
-            return javaSpan.TotalMilliseconds;
+            return (long)javaSpan.TotalMilliseconds;
 
         }
 
         private void send(String param, String value)
         {
             String message = "t:" + GetCurrentMilli() + ";";
-            message += "s:localhost;";
+            message += "s:127.0.0.1;";
             message += "p:" + PORT_RECIEVE + ";";
             message += "d:" + param + "=" + value;
 

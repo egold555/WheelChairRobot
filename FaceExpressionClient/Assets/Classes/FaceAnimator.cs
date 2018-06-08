@@ -171,7 +171,7 @@ public class FaceAnimator : EmofaniGlobal
 
 		} catch (Exception e) {
 			// something went wrong. Send an error message with the problem.
-			SendErrorStatus(e.Message);
+			SendErrorStatus(e.Message + " | " +  e.StackTrace);
 		}
 	}
 
