@@ -13,16 +13,16 @@ public class Communicator {
 	private DatagramSocket server = null;
 
 	private Communicator() {			
-		
+
 	}
-	
+
 	public static Communicator getInstance() {
 		if (instance == null){
 			instance = new Communicator();
 		}
 		return instance;
 	}
-	
+
 	public void listen(){
 		MainWindow mw = MainWindow.getInstance();
 		try {
@@ -33,25 +33,28 @@ public class Communicator {
 			String data = new String(packet.getData()).trim();
 			mw.print("In: \"" + data + "\"");
 			mw.update(data);
-		} catch (SocketTimeoutException e) {
-			mw.print("Timeout: Emofani didn't answer in time.");
-		}catch (IOException e) {
+		} 
+		catch (SocketTimeoutException e) {
+			mw.print("Timeout: RobotFace didn't answer in time.");
+		}
+		catch (IOException e) {
 			mw.print("Error: " + e.getMessage());
-		} finally {
+		} 
+		finally {
 			server.close();
 		}
 	}
-	
+
 	public void send(String param, String value){
-		
+
 		MainWindow mw = MainWindow.getInstance();
-		
+
 		// message format: 
 		// t:<timestamp>;s:<source>;p:<port>;d:<parameter>=<value>
-		
+
 		//Ex: Communicator.getInstance().send("expression", "happy%100");
 		//Ex: Communicator.getInstance().send("gazex", "130");
-		
+
 		String message = "t:" + System.currentTimeMillis() + ";";
 
 		try {
@@ -62,7 +65,7 @@ public class Communicator {
 		message += "p:" + mw.getReceivePort() + ";";
 		message += "d:" + param + "=" + value;
 		DatagramSocket s = null;
-		
+
 		try {
 			DatagramPacket p = new DatagramPacket(
 					message.getBytes(),
@@ -81,7 +84,7 @@ public class Communicator {
 				mw.print("Error: " + e.getMessage()); 
 			}
 		}
-		
+
 		// listen for OK
 		listen();
 
@@ -90,5 +93,5 @@ public class Communicator {
 	protected void finalize() {
 		server.close();
 	}
-	
+
 }
