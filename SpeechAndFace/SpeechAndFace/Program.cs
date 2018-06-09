@@ -33,10 +33,12 @@ namespace SpeechAndFace
                 //Incase they dont have the voice installed, we will just use the default microsoft david voice witch every computer should have
                 synth.SelectVoice("Microsoft David Desktop");
             }
-            synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(synth_SpeakProgress);
 
-            synth.SpeakStarted += new EventHandler<SpeakStartedEventArgs>(synth_SpeakStarted);
-            synth.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>(synth_SpeakCompleted);
+            synth.SetOutputToDefaultAudioDevice();
+
+            synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(synth_SpeakProgress);
+            synth.StateChanged += new EventHandler<StateChangedEventArgs>(synth_StateChanged);
+            
 
             //Read CSV file of words->emotions
             //readWordFile();
@@ -46,8 +48,22 @@ namespace SpeechAndFace
                 //Console.WriteLine(word + " = " + emotionalWords[word]);
             }
 
-            speak("Hello World this is a test of using text to speech sync'd to face movements. Currently I express no emotion");
-            Console.ReadKey();
+            //speak("Hello World this is a test of using text to speech sync'd to face movements, Currently I express no emotion");
+            //Console.ReadKey();
+            while (true) {
+                var input = Console.ReadLine();
+                if (input.Equals("exit", StringComparison.OrdinalIgnoreCase)) {
+                    break;
+                }
+                speak(input);
+            }
+
+            disposeEverything();
+        }
+
+        private static void disposeEverything()
+        {
+            synth.Dispose();
         }
 
         private static void readWordFile()
@@ -84,26 +100,38 @@ namespace SpeechAndFace
             }
         }
 
+        //Handle pausing the mouth when we reach a pause in the sentence
+        private static bool progressStartSpeaking = false;
         private static void synth_SpeakProgress(object sender, SpeakProgressEventArgs e)
         {
-            Console.WriteLine("Speaking: " + e.Text);
+            string word = e.Text;
+            Console.WriteLine("Speaking: " + word);
+
+            if (progressStartSpeaking) {
+                progressStartSpeaking = false;
+                send("talking", "true");
+            }
+
+            if (word.EndsWith(".") || word.EndsWith(",")) {
+                progressStartSpeaking = true;
+                send("talking", "false");
+            }
         }
 
-        private static void synth_SpeakStarted(object sender, SpeakStartedEventArgs e)
+        private static void synth_StateChanged(object sender, StateChangedEventArgs e)
         {
-            Console.WriteLine("Speech Started");
-        }
-
-        private static void synth_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
-        {
-            Console.WriteLine("Speech Finished");
+            Console.WriteLine("\nSynthesizer State: {0}    Previous State: {1}\n", e.State, e.PreviousState);
+            if(e.State == SynthesizerState.Speaking) {
+                send("talking", "true");
+            }
+            else {
+                send("talking", "false");
+            }
         }
 
         public static void speak(string text)
         {
-            send("talking", "true");
             synth.Speak(text);
-            send("talking", "false");
         }
 
 
