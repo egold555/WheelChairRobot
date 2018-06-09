@@ -7,6 +7,7 @@ using System.Speech.Synthesis;
 using System.Net.Sockets;
 using System.Net;
 using System.IO;
+using AIMLbot;
 
 namespace SpeechAndFace
 {
@@ -18,10 +19,14 @@ namespace SpeechAndFace
         const int PORT_RECIEVE = 11001;
         const string SERVER_IP = "127.0.0.1";
 
+        private static Bot AimlBot;
+        private static User myUser;
+
         static Dictionary<string, string> emotionalWords = new Dictionary<string, string>();
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Loading...");
             //Set up speech synth
             //http://www.kobaspeech.com/en/download-voices
             try
@@ -38,7 +43,16 @@ namespace SpeechAndFace
 
             synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(synth_SpeakProgress);
             synth.StateChanged += new EventHandler<StateChangedEventArgs>(synth_StateChanged);
-            
+
+            AimlBot = new Bot();
+            myUser = new User("user", AimlBot);
+
+            AimlBot.loadSettings();
+            AimlBot.isAcceptingUserInput = false;
+
+            //https://docs.google.com/document/d/1wNT25hJRyupcG51aO89UcQEiG-HkXRXusukADpFnDs4/pub
+            AimlBot.loadAIMLFromFiles();
+            AimlBot.isAcceptingUserInput = true;
 
             //Read CSV file of words->emotions
             //readWordFile();
@@ -50,12 +64,15 @@ namespace SpeechAndFace
 
             //speak("Hello World this is a test of using text to speech sync'd to face movements, Currently I express no emotion");
             //Console.ReadKey();
+            Console.WriteLine("Ready");
             while (true) {
                 var input = Console.ReadLine();
                 if (input.Equals("exit", StringComparison.OrdinalIgnoreCase)) {
                     break;
                 }
-                speak(input);
+                string output = getBotResponce(input);
+                Console.WriteLine("Bot: " + output);
+                speak(output);
             }
 
             disposeEverything();
@@ -112,7 +129,7 @@ namespace SpeechAndFace
                 send("talking", "true");
             }
 
-            if (word.EndsWith(".") || word.EndsWith(",")) {
+            if (word.EndsWith(".") || word.EndsWith(",") || word.EndsWith("?") || word.EndsWith("!")) {
                 progressStartSpeaking = true;
                 send("talking", "false");
             }
@@ -154,6 +171,13 @@ namespace SpeechAndFace
             IPEndPoint endPoint = new IPEndPoint(serverAddr, PORT_SEND);
             byte[] send_buffer = Encoding.ASCII.GetBytes(message);
             sock.SendTo(send_buffer, endPoint);
+        }
+
+        private static String getBotResponce(String input)
+        {
+            Request r = new Request(input, myUser, AimlBot);
+            Result res = AimlBot.Chat(r);
+            return (res.Output);
         }
     }
 }
