@@ -23,19 +23,31 @@ namespace SpeechAndFace
         static void Main(string[] args)
         {
             //Set up speech synth
-            synth.SelectVoice("Vocalizer Karen - English (Australia) For KobaSpeech 3");
+            //http://www.kobaspeech.com/en/download-voices
+            try
+            {
+                synth.SelectVoice("Vocalizer Karen - English (Australia) For KobaSpeech 3");
+            }
+            catch (Exception e)
+            {
+                //Incase they dont have the voice installed, we will just use the default microsoft david voice witch every computer should have
+                synth.SelectVoice("Microsoft David Desktop");
+            }
             synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(synth_SpeakProgress);
+
+            synth.SpeakStarted += new EventHandler<SpeakStartedEventArgs>(synth_SpeakStarted);
+            synth.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>(synth_SpeakCompleted);
 
             //Read CSV file of words->emotions
             //readWordFile();
 
-            //foreach(String word in emotionalWords.Keys)
-            //{
-            //    Console.WriteLine(word + " = " + emotionalWords[word]);
-            //}
+            foreach (String word in emotionalWords.Keys)
+            {
+                //Console.WriteLine(word + " = " + emotionalWords[word]);
+            }
 
-            speak("Hello World");
-            Console.ReadLine();
+            speak("Hello World this is a test of using text to speech sync'd to face movements. Currently I express no emotion");
+            Console.ReadKey();
         }
 
         private static void readWordFile()
@@ -64,7 +76,7 @@ namespace SpeechAndFace
                             }
                             catch (System.ArgumentException e)
                             {
-                                Console.WriteLine("ERROR: " + e.Message + "(" + word + ")");
+                                Console.WriteLine(e.Message + "(" + word + ")");
                             }
                         }
                     }
@@ -74,7 +86,17 @@ namespace SpeechAndFace
 
         private static void synth_SpeakProgress(object sender, SpeakProgressEventArgs e)
         {
-            
+            Console.WriteLine("Speaking: " + e.Text);
+        }
+
+        private static void synth_SpeakStarted(object sender, SpeakStartedEventArgs e)
+        {
+            Console.WriteLine("Speech Started");
+        }
+
+        private static void synth_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
+        {
+            Console.WriteLine("Speech Finished");
         }
 
         public static void speak(string text)
