@@ -23,18 +23,18 @@ namespace SpeechAndFace
         static void Main(string[] args)
         {
             //Set up speech synth
-            //synth.SelectVoice("Vocalizer Karen - English (Australia) For KobaSpeech 3");
-            //synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(synth_SpeakProgress);
+            synth.SelectVoice("Vocalizer Karen - English (Australia) For KobaSpeech 3");
+            synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(synth_SpeakProgress);
 
             //Read CSV file of words->emotions
-            readWordFile();
+            //readWordFile();
 
-            foreach(String word in emotionalWords.Keys)
-            {
-                Console.WriteLine(word + " = " + emotionalWords[word]);
-            }
+            //foreach(String word in emotionalWords.Keys)
+            //{
+            //    Console.WriteLine(word + " = " + emotionalWords[word]);
+            //}
 
-            //speak("Hello World");
+            speak("Hello World");
             Console.ReadLine();
         }
 
