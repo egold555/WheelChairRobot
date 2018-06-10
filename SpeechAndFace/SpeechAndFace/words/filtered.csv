@@ -1,0 +1,362 @@
+Word,Tag,Response
+aggressive,# Anger,frustrated%100
+agony,# Anger,frustrated%100
+contrary,# Anger,frustrated%100
+controlling,# Anger,frustrated%100
+critical,# Anger,frustrated%100
+desperate,# Anger,frustrated%100
+eliminate,# Anger,frustrated%100
+frustrated,# Anger,frustrated%100
+furious,# Anger,frustrated%100
+harmful,# Anger,frustrated%100
+harsh,# Anger,frustrated%100
+impatient,# Anger,frustrated%100
+jealous,# Anger,frustrated%100
+malicious,# Anger,frustrated%100
+offensive,# Anger,frustrated%100
+pessimistic,# Anger,frustrated%100
+poisonous,# Anger,frustrated%100
+powerless,# Anger,frustrated%100
+provoke,# Anger,frustrated%100
+rebellious,# Anger,frustrated%100
+repulsive,# Anger,frustrated%100
+sarcastic,# Anger,frustrated%100
+scandal,# Anger,frustrated%100
+severe,# Anger,frustrated%100
+shameful,# Anger,frustrated%100
+shocking,# Anger,frustrated%100
+spiteful,# Anger,frustrated%100
+terrible,# Anger,frustrated%100
+tragic,# Anger,frustrated%100
+unreliable,# Anger,frustrated%100
+unstable,# Anger,frustrated%100
+venomous,# Anger,frustrated%100
+vindictive,# Anger,frustrated%100
+violent,# Anger,frustrated%100
+wicked,# Anger,frustrated%100
+alarmed,# Confusion,
+anxious,# Confusion,
+awkward,# Confusion,
+blushing,# Confusion,
+compulsive,# Confusion,
+deceived,# Confusion,
+dishonest,# Confusion,
+distracted,# Confusion,
+distraught,# Confusion,
+doomed,# Confusion,
+doubtful,# Confusion,
+embarrassed,# Confusion,
+incapable,# Confusion,
+incompetent,# Confusion,
+indecisive,# Confusion,
+inferior,# Confusion,
+insecure,# Confusion,
+overwhelmed,# Confusion,
+pathetic,# Confusion,
+stressed,# Confusion,
+suspicious,# Confusion,
+tense,# Confusion,
+terrified,# Confusion,
+threatened,# Confusion,
+trapped,# Confusion,
+uncertain,# Confusion,
+uncomfortable,# Confusion,
+unsure,# Confusion,
+vulnerable,# Confusion,
+banned,# Curiosity,attentive%100
+censored,# Curiosity,attentive%100
+concealed,# Curiosity,attentive%100
+confidential,# Curiosity,attentive%100
+controversial,# Curiosity,attentive%100
+forbidden,# Curiosity,attentive%100
+hidden,# Curiosity,attentive%100
+secret,# Curiosity,attentive%100
+unbelievable,# Curiosity,attentive%100
+underground,# Curiosity,attentive%100
+adequate,"# Inspired ",
+balanced,"# Inspired ",
+bold,"# Inspired ",
+brave,"# Inspired ",
+capable,"# Inspired ",
+clear,"# Inspired ",
+cooperative,"# Inspired ",
+dynamic,"# Inspired ",
+eager,"# Inspired ",
+earnest,"# Inspired ",
+fine,"# Inspired ",
+focused,"# Inspired ",
+forgiving,"# Inspired ",
+grateful,"# Inspired ",
+inspired,"# Inspired ",
+keen,"# Inspired ",
+motivated,"# Inspired ",
+okay,"# Inspired ",
+productive,"# Inspired ",
+sincere,"# Inspired ",
+unique,"# Inspired ",
+belligerent,# Intense Anger and Hatred,
+contemptuous,# Intense Anger and Hatred,
+vicious,# Intense Anger and Hatred,
+shocked,# Intense Fear and Panic,
+greedy,# Intense Jealousy & Envy,
+possessive,# Intense Jealousy & Envy,
+bleak,"# Intense Sadness, Grief, and Depression",
+depressed,"# Intense Sadness, Grief, and Depression",
+hopeless,"# Intense Sadness, Grief, and Depression",
+morose,"# Intense Sadness, Grief, and Depression",
+nihilistic,# Intense Suicidal Urges,
+suicidal,# Intense Suicidal Urges,
+angry,# Medium (or Mood-State) Anger,
+arrogant,# Medium (or Mood-State) Anger,
+mad,# Medium (or Mood-State) Anger,
+morbid,# Medium (or Mood-State) Depression and Suicidal Urges,
+afraid,# Medium (or Mood-State) Fear and Anxiety,
+perturbed,# Medium (or Mood-State) Fear and Anxiety,
+contented,# Medium (or Mood-State) Happiness and Contentment,
+happy,# Medium (or Mood-State) Happiness and Contentment,
+lively,# Medium (or Mood-State) Happiness and Contentment,
+proud,# Medium (or Mood-State) Happiness and Contentment,
+envious,# Medium (or Mood-State) Jealousy & Envy,
+down,"# Medium (or Mood-State) Sadness, Grief, and Depression",
+drained,"# Medium (or Mood-State) Sadness, Grief, and Depression",
+gloomy,"# Medium (or Mood-State) Sadness, Grief, and Depression",
+melancholy,"# Medium (or Mood-State) Sadness, Grief, and Depression",
+sad,"# Medium (or Mood-State) Sadness, Grief, and Depression",
+awful,"# Negative ",
+crazy,"# Negative ",
+hangover,"# Negative ",
+hurt,"# Negative ",
+hysterical,"# Negative ",
+idiotic,"# Negative ",
+lovesick,"# Negative ",
+nasty,"# Negative ",
+puzzled,"# Negative ",
+silly,"# Negative ",
+sorry,"# Negative ",
+strange,"# Negative ",
+stupid,"# Negative ",
+careful,# Positive,
+concentrated,# Positive,
+fair,# Positive,
+fantastic,# Positive,
+good,# Positive,
+nice,# Positive,
+pleasant,# Positive,
+sensible,# Positive,
+serious,# Positive,
+absolutely,"# Safe / Satisfied ",
+accurate,"# Safe / Satisfied ",
+adaptable,"# Safe / Satisfied ",
+advantage,"# Safe / Satisfied ",
+always,"# Safe / Satisfied ",
+assured,"# Safe / Satisfied ",
+astonishing,"# Safe / Satisfied ",
+astounded,"# Safe / Satisfied ",
+authentic,"# Safe / Satisfied ",
+certain,"# Safe / Satisfied ",
+certainly,"# Safe / Satisfied ",
+confident,"# Safe / Satisfied ",
+conscientious,"# Safe / Satisfied ",
+definitely,"# Safe / Satisfied ",
+delighted,"# Safe / Satisfied ",
+easy,"# Safe / Satisfied ",
+effective,"# Safe / Satisfied ",
+emphasize,"# Safe / Satisfied ",
+excellent,"# Safe / Satisfied ",
+extremely,"# Safe / Satisfied ",
+freedom,"# Safe / Satisfied ",
+fulfilled,"# Safe / Satisfied ",
+genuine,"# Safe / Satisfied ",
+guaranteed,"# Safe / Satisfied ",
+honest,"# Safe / Satisfied ",
+humility,"# Safe / Satisfied ",
+investment,"# Safe / Satisfied ",
+relaxed,"# Safe / Satisfied ",
+reliable,"# Safe / Satisfied ",
+responsible,"# Safe / Satisfied ",
+secure,"# Safe / Satisfied ",
+solid,"# Safe / Satisfied ",
+stable,"# Safe / Satisfied ",
+supported,"# Safe / Satisfied ",
+sure,"# Safe / Satisfied ",
+truthful,"# Safe / Satisfied ",
+detached,# Soft Anger and Apathy,
+flat,# Soft Depression and Suicidal Urges,
+helpless,# Soft Depression and Suicidal Urges,
+alert,# Soft Fear and Anxiety,
+confused,# Soft Fear and Anxiety,
+intuitive,# Soft Fear and Anxiety,
+amused,# Soft Happiness,
+friendly,# Soft Happiness,
+open,# Soft Happiness,
+protective,# Soft Jealousy & Envy,
+disconnected,# Soft Sadness,
+low,# Soft Sadness,
+humble,# Soft Shame and Guilt,
+intimidated,# Soft Shame and Guilt,
+speechless,# Soft Shame and Guilt,
+bargain,# Urgency,
+deadline,# Urgency,
+discount,# Urgency,
+explode,# Urgency,
+extra,# Urgency,
+fortune,# Urgency,
+immediately,# Urgency,
+limited,# Urgency,
+magical,# Urgency,
+magnificent,# Urgency,
+miracle,# Urgency,
+profitable,# Urgency,
+proven,# Urgency,
+quick,# Urgency,
+reduced,# Urgency,
+remarkable,# Urgency,
+results,# Urgency,
+revolutionary,# Urgency,
+safe,# Urgency,
+save,# Urgency,
+seize,# Urgency,
+sensational,# Urgency,
+should,# Urgency,
+superb,# Urgency,
+superior,# Urgency,
+tremendous,# Urgency,
+truly,# Urgency,
+trustworthy,# Urgency,
+urge,# Urgency,
+worthwhile,# Urgency,
+animated,#Happy,happy%100
+blessed,#Happy,happy%100
+bright,#Happy,happy%100
+cheerful,#Happy,happy%100
+comfortable,#Happy,happy%100
+constructive,#Happy,happy%100
+content,#Happy,happy%100
+creative,#Happy,happy%100
+encouraged,#Happy,happy%100
+energetic,#Happy,happy%100
+frisky,#Happy,happy%100
+funny,#Happy,happy%100
+glorious,#Happy,happy%100
+helpful,#Happy,happy%100
+innocent,#Happy,happy%100
+intelligent,#Happy,happy%100
+joyous,#Happy,happy%100
+liberated,#Happy,happy%100
+playful,#Happy,happy%100
+pleased,#Happy,happy%100
+satisfied,#Happy,happy%100
+sunny,#Happy,happy%100
+surprised,#Happy,happy%100
+tickled,#Happy,happy%100
+wonderful,#Happy,happy%100
+world,#Happy,happy%100
+accepting,#OPEN,
+amazed,#OPEN,
+free,#OPEN,
+interested,#OPEN,
+kind,#OPEN,
+receptive,#OPEN,
+sympathetic,#OPEN,
+understanding,#OPEN,
+aware,#Relaxed,relaxed%100
+beaming,#Relaxed,relaxed%100
+calm,#Relaxed,relaxed%100
+efficient,#Relaxed,relaxed%100
+fluid,#Relaxed,relaxed%100
+healthy,#Relaxed,relaxed%100
+laughing,#Relaxed,relaxed%100
+light,#Relaxed,relaxed%100
+natural,#Relaxed,relaxed%100
+placid,#Relaxed,relaxed%100
+quiet,#Relaxed,relaxed%100
+reflective,#Relaxed,relaxed%100
+rested,#Relaxed,relaxed%100
+smiling,#Relaxed,relaxed%100
+spontaneous,#Relaxed,relaxed%100
+steady,#Relaxed,relaxed%100
+still,#Relaxed,relaxed%100
+waiting,#Relaxed,relaxed%100
+fearful,AFRAID,
+frightened,AFRAID,
+nervous,AFRAID,
+panic,AFRAID,
+restless,AFRAID,
+scared,AFRAID,
+worried,AFRAID,
+impulsive,ALIVE,
+annoyed,ANGRY,
+bitter,ANGRY,
+boiling,ANGRY,
+cross,ANGRY,
+hostile,ANGRY,
+insulting,ANGRY,
+irritated,ANGRY,
+sore,ANGRY,
+unpleasant,ANGRY,
+upset,ANGRY,
+lost,CONFUSED,
+shy,CONFUSED,
+skeptical,CONFUSED,
+abominable,DEPRESSED,
+ashamed,DEPRESSED,
+bad,DEPRESSED,
+disappointed,DEPRESSED,
+discouraged,DEPRESSED,
+disgusting,DEPRESSED,
+guilty,DEPRESSED,
+lousy,DEPRESSED,
+miserable,DEPRESSED,
+clever,GOOD,
+peaceful,GOOD,
+fortunate,HAPPY,
+gay,HAPPY,
+glad,HAPPY,
+great,HAPPY,
+important,HAPPY,
+lucky,HAPPY,
+merry,HAPPY,
+alone,HELPLESS,
+despair,HELPLESS,
+dominated,HELPLESS,
+empty,HELPLESS,
+forced,HELPLESS,
+useless,HELPLESS,
+crushed,HURT,
+injured,HURT,
+offended,HURT,
+rejected,HURT,
+tortured,HURT,
+bored,INDIFFERENT,
+cold,INDIFFERENT,
+dull,INDIFFERENT,
+insensitive,INDIFFERENT,
+neutral,INDIFFERENT,
+nonchalant,INDIFFERENT,
+absorbed,INTERESTED,
+affected,INTERESTED,
+concerned,INTERESTED,
+curious,INTERESTED,
+inquisitive,INTERESTED,
+intrigued,INTERESTED,
+nosy,INTERESTED,
+snoopy,INTERESTED,
+attracted,LOVE,
+close,LOVE,
+considerate,LOVE,
+devoted,LOVE,
+loved,LOVE,
+loving,LOVE,
+passionate,LOVE,
+sensitive,LOVE,
+sympathy,LOVE,
+tender,LOVE,
+touched,LOVE,
+warm,LOVE,
+challenged,POSITIVE,
+determined,POSITIVE,
+excited,POSITIVE,
+anguish,SAD,
+grief,SAD,
+lonely,SAD,
+unhappy,SAD,
