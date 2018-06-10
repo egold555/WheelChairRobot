@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.IO;
 using AIMLbot;
+using CsvHelper;
 
 namespace SpeechAndFace
 {
@@ -22,7 +23,7 @@ namespace SpeechAndFace
         private static Bot AimlBot;
         private static User myUser;
 
-        static Dictionary<string, string> emotionalWords = new Dictionary<string, string>();
+        static Dictionary<string, WordRecord> emotionalWords = new Dictionary<string, WordRecord>();
 
         static void Main(string[] args)
         {
@@ -55,12 +56,8 @@ namespace SpeechAndFace
             AimlBot.isAcceptingUserInput = true;
 
             //Read CSV file of words->emotions
-            //readWordFile();
-
-            foreach (String word in emotionalWords.Keys)
-            {
-                //Console.WriteLine(word + " = " + emotionalWords[word]);
-            }
+            CsvReader reader = new CsvReader(new StreamReader("words.csv"));
+            emotionalWords = reader.GetRecords<WordRecord>().ToDictionary(wordRecord => wordRecord.Word);
 
             //speak("Hello World this is a test of using text to speech sync'd to face movements, Currently I express no emotion");
             //Console.ReadKey();
@@ -70,7 +67,7 @@ namespace SpeechAndFace
                 if (input.Equals("exit", StringComparison.OrdinalIgnoreCase)) {
                     break;
                 }
-                string output = getBotResponce(input);
+                string output = getBotResponce(input).Trim();
                 Console.WriteLine("Bot: " + output);
                 speak(output);
             }
@@ -83,46 +80,27 @@ namespace SpeechAndFace
             synth.Dispose();
         }
 
-        private static void readWordFile()
-        {
-            using (StreamReader sr = new StreamReader("words.csv"))
-            {
-                String line;
-
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] parts = line.Split(',');
-                    string word = parts[0].ToLower();
-                    string emotion = parts[1].ToLower();
-
-                    if (!word.Contains("#"))
-                    {
-                        if (!string.IsNullOrEmpty(word))
-                        {
-                            if (String.IsNullOrEmpty(emotion))
-                            {
-                                emotion = "null";
-                            }
-                            try
-                            {
-                                emotionalWords.Add(word, emotion);
-                            }
-                            catch (System.ArgumentException e)
-                            {
-                                Console.WriteLine(e.Message + "(" + word + ")");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         //Handle pausing the mouth when we reach a pause in the sentence
         private static bool progressStartSpeaking = false;
         private static void synth_SpeakProgress(object sender, SpeakProgressEventArgs e)
         {
             string word = e.Text;
             Console.WriteLine("Speaking: " + word);
+
+            string wordToFind = word.ToLower().Trim();
+            wordToFind = wordToFind.Replace(".", "");
+            wordToFind = wordToFind.Replace(",", "");
+            wordToFind = wordToFind.Replace("?", "");
+            wordToFind = wordToFind.Replace("!", "");
+            wordToFind = wordToFind.Replace(":", "");
+            wordToFind = wordToFind.Replace(";", "");
+            wordToFind = wordToFind.Replace("'", "");
+
+            if (emotionalWords.ContainsKey(wordToFind)) {
+                WordRecord record = emotionalWords[wordToFind];
+                Console.WriteLine("Found record: " + record.Word + "-" + record.Response);
+                send("expression", record.Response);
+            }
 
             if (progressStartSpeaking) {
                 progressStartSpeaking = false;
@@ -179,5 +157,12 @@ namespace SpeechAndFace
             Result res = AimlBot.Chat(r);
             return (res.Output);
         }
+    }
+
+    class WordRecord
+    {
+        public string Word { get; set; }
+        public string Tag { get; set; }
+        public string Response { get; set; }
     }
 }
