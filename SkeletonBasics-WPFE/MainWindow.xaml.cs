@@ -5,6 +5,8 @@
     using System.Windows.Media;
     using Microsoft.Kinect;
     using System.Globalization;
+    using System;
+    using System.IO.Ports;
 
     public partial class MainWindow : Window
     {
@@ -47,10 +49,32 @@
         //Drawing image that we will display
         private DrawingImage imageSource;
 
+        // Serial port to control the robot.
+        SerialPort serialPort = new SerialPort();
+
+
         //Initializes a new instance of the MainWindow class.
         public MainWindow()
         {
             InitializeComponent();
+
+            try {
+                if (SerialPort.GetPortNames().Length == 0) {
+                    Console.WriteLine("No Serial ports detected!");
+                    this.statusBarText.Text = "No Serial ports detected!";
+
+                }
+                else {
+                    serialPort.PortName = SerialPort.GetPortNames()[0];
+                    serialPort.BaudRate = 57600;
+                    //serialPort.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
+                    serialPort.Open();
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.ToString());
+                this.statusBarText.Text = "Serial port not opened!";
+            }
         }
 
         //Draws indicators to show which edges are clipping skeleton data
@@ -171,11 +195,11 @@
                     foreach (Skeleton skel in skeletons)
                     {
                         RenderClippedEdges(skel, dc);
+                        TurnRobot(skel);
 
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.DrawBonesAndJoints(skel, dc);
-                            DrawDebugText(skel, dc);
                         }
                         else if (skel.TrackingState == SkeletonTrackingState.PositionOnly)
                         {
@@ -194,12 +218,17 @@
             }
         }
 
-        private void DrawDebugText(Skeleton skel, DrawingContext dc)
+        private void TurnRobot(Skeleton skel)
         {
-            string text = "ID: " + skel.TrackingId + "  X: " + skel.Position.X + " Y: " + skel.Position.Y + " Z: " + skel.Position.Z;
-
-            FormattedText ft = new FormattedText(text, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Klavika"), 20, Brushes.Yellow);
-            dc.DrawText(ft, new Point(0, 0));
+            if(skel.ClippedEdges.HasFlag(FrameEdges.Left)) {
+                serialPort.WriteLine("l50");
+            }
+            else if (skel.ClippedEdges.HasFlag(FrameEdges.Right)) {
+                serialPort.WriteLine("l150");
+            }
+            else {
+                serialPort.WriteLine("l100");
+            }
         }
 
         //Draws a skeleton's bones and joints
