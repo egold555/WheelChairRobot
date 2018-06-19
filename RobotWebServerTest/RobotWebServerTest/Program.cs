@@ -77,24 +77,30 @@ namespace RobotWebServerTest
 
         private string SendResponse(HttpListenerRequest request)
         {
-            try {
-                String url = request.RawUrl;
-                Console.WriteLine(getTimestamp() + "Recieved: " + url);
+            // Only handle one request at a time.
+            lock (this) {
+                try {
+                    String url = request.RawUrl;
 
-                if (url.Contains("/xy/")) {
-                    String xy = url.Substring(url.IndexOf("/xy/") + "/xy/".Length);
-                    String[] values = xy.Split('/');
-                    serialPort.WriteLine("l" + values[0]);
-                    serialPort.WriteLine("f" + values[1]);
+                    if (url.Contains("/xy/")) {
+                        String xy = url.Substring(url.IndexOf("/xy/") + "/xy/".Length);
+                        String[] values = xy.Split('/');
+                        Console.WriteLine(getTimestamp() + "Received request to move to {0},{1}", values[0], values[1]);
+                        serialPort.WriteLine("l" + values[0]);
+                        serialPort.WriteLine("f" + values[1]);
+                    }
+                    else if (url.Contains("/k")) {
+                        serialPort.WriteLine("k"); //Forward the keep alive message
+                    }
+                    else {
+                        Console.WriteLine(getTimestamp() + "Unknown request: " + url);
+                    }
                 }
-                else if (url.Contains("/k")) {
-                    serialPort.WriteLine("k"); //Forward the keep alive message
+                catch (Exception e) {
+                    Console.WriteLine(getTimestamp() + e.ToString());
                 }
+                return webPage;
             }
-            catch (Exception e) {
-                Console.WriteLine(getTimestamp() + e.ToString());
-            }
-            return webPage;
         }
 
         private String getTimestamp()
