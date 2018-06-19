@@ -43,7 +43,7 @@ namespace RobotWebServerTest
                 ws.Run();
 
                 if (SerialPort.GetPortNames().Length == 0) {
-                    Console.WriteLine("No Serial ports detected!");
+                    Console.WriteLine(getTimestamp() + "No Serial ports detected!");
                 }
                 else {
                     serialPort.PortName = SerialPort.GetPortNames()[0];
@@ -65,7 +65,7 @@ namespace RobotWebServerTest
         private void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-            Console.WriteLine("Arduino: " + sp.ReadExisting());
+            Console.Write(sp.ReadExisting());
         }
 
         void LoadWebPage()
@@ -77,17 +77,29 @@ namespace RobotWebServerTest
 
         private string SendResponse(HttpListenerRequest request)
         {
-            String url = request.RawUrl;
-            Console.WriteLine("Recieved: " + url);
+            try {
+                String url = request.RawUrl;
+                Console.WriteLine(getTimestamp() + "Recieved: " + url);
 
-            if (url.Contains("/xy/")){
-                String xy = url.Substring(url.IndexOf("/xy/") + "/xy/".Length);
-                String[] values = xy.Split('/');
-                serialPort.WriteLine("l" + values[0]);
-                serialPort.WriteLine("f" + values[1]);
+                if (url.Contains("/xy/")) {
+                    String xy = url.Substring(url.IndexOf("/xy/") + "/xy/".Length);
+                    String[] values = xy.Split('/');
+                    serialPort.WriteLine("l" + values[0]);
+                    serialPort.WriteLine("f" + values[1]);
+                }
+                else if (url.Contains("/k")) {
+                    serialPort.WriteLine("k"); //Forward the keep alive message
+                }
             }
-
+            catch (Exception e) {
+                Console.WriteLine(getTimestamp() + e.ToString());
+            }
             return webPage;
+        }
+
+        private String getTimestamp()
+        {
+            return "[" + DateTime.Now.ToString() + "] ";
         }
     }
 }
