@@ -163,7 +163,7 @@ void loop() {
 
   // Dead-man switch. If we haven't got a command in 1.5 seconds, then
   // shut it all down.
-  if (millis() > milliLastCommand + 1500) {
+  if (!emergency && millis() > milliLastCommand + 1500) {
     // Stop everything!
     setAbstractPositions(100, 100);
     Serial.println("Emergency stop!");
