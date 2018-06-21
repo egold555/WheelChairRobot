@@ -1,0 +1,155 @@
+<html>
+
+<head>
+    <title>Robot Control Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        var canvas, ctx;
+        var touchX, touchY;
+
+        var dotSize = 12;
+
+        function drawDot(x, y) {
+            r = 0;
+            g = 0;
+            b = 0;
+            a = 255;
+
+            clearAndDrawLines();
+
+            ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (a / 255) + ")";
+
+            ctx.beginPath();
+            ctx.arc(x, y, dotSize, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+
+            sendCoords(x / 2, y / 2);
+        }
+
+        function sendCoords(x, y) {
+
+            //if they manage to go off the screen
+            if (x < 0) {
+                x = 0;
+            }
+            if (y < 0) {
+                y = 0;
+            }
+            if (x > 200) {
+                x = 200;
+            }
+            if (y > 200) {
+                y = 200;
+            }
+
+            //git rid of decimals
+            x = Math.round(x);
+            y = Math.round(y);
+            //console.log("x: " + x + " y: " + y);
+            sendMsg("/xy/" + x + "/" + y);
+        }
+
+        function sendMsg(msg) {
+            var http = new XMLHttpRequest();
+            http.open('POST', "http://%IP%:%PORT%/" + msg, true);
+            http.send();
+        }
+
+        function reset() {
+            drawDot(canvas.width / 2, canvas.height / 2);
+        }
+
+        function clearAndDrawLines() {
+            //Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.beginPath();
+            //v line
+            ctx.moveTo(canvas.width / 2, -canvas.height);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+
+            //h line
+            ctx.moveTo(-canvas.width, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+
+            ctx.strokeStyle = '#FF0000';
+            ctx.stroke();
+        }
+
+        function touchStart() {
+            getTouchPos();
+
+            drawDot(touchX, touchY);
+
+            event.preventDefault();
+        }
+
+        // Draw something and prevent the default scrolling when touch movement is detected
+        function touchMove(e) {
+            getTouchPos(e);
+
+            drawDot(touchX, touchY);
+
+            event.preventDefault();
+        }
+
+        function touchEnd(e) {
+            reset();
+        }
+
+        function getTouchPos(e) {
+            if (!e)
+                var e = event;
+
+            if (e.touches) {
+                if (e.touches.length == 1) { // Only deal with one finger
+                    var touch = e.touches[0]; // Get the information for finger #1
+                    touchX = touch.pageX - touch.target.offsetLeft;
+                    touchY = touch.pageY - touch.target.offsetTop;
+                }
+            }
+        }
+
+        function init() {
+
+            canvas = document.getElementById('pad');
+
+            ctx = canvas.getContext('2d');
+
+            canvas.addEventListener('touchstart', touchStart, false);
+            canvas.addEventListener('touchmove', touchMove, false);
+            canvas.addEventListener('touchend', touchEnd, false);
+
+            setInterval(myTimer, 400);
+
+            reset();
+        }
+
+
+        //Keep alive
+        function myTimer() {
+           sendMsg("k");
+        }
+    </script>
+
+    <style>
+        body {
+            overscroll-behavior: contain;
+            /* Disable pull to refresh (Only on Chrome and android) https://stackoverflow.com/a/47709903 */
+        }
+
+        #pad {
+            float: left;
+            border: 2px solid #000;
+            border-radius: 4px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body onload="init()">
+    <canvas id="pad" height="400" width="400"> </canvas>
+</body>
+
+</html>
